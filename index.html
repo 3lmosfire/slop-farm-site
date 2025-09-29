@@ -1,0 +1,1881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Slop Farm – Educational Media, Made Simple</title>
+<link rel="icon" href="favicon.ico">
+<meta name="theme-color" content="#7A2CD6">
+  <meta name="description" content="The Slop Farm connects you with curated partners and deals across education, tech, business, and more—educational media, made simple.">
+
+  <!-- Space Grotesk font for all text -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --nav-offset: 96px;
+      --ink:#1a202c;
+      --lavender-100:#F5EEFF;
+      --violet-600:#7A2CD6;
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box}
+    html,body{height:100%}
+    body{font-family:"Space Grotesk", sans-serif;background:#ffffff;color:var(--ink);line-height:1.6;padding-top:var(--nav-offset)}
+    h1,h2,h3,h4{font-family:"Space Grotesk", sans-serif;line-height:1.2;color:var(--ink)}
+
+    /* Page Container */
+    .page{display:none}
+    .page.active{display:block}
+    .container{max-width:1200px;margin:0 auto;padding:0 20px}
+
+    /* Navigation */
+    nav{background:#fff;border-bottom:1px solid #e8eaf2;padding:12px 0;position:fixed;top:0;left:0;right:0;width:100%;z-index:1000;box-shadow:0 1px 6px rgba(16,20,40,.06)}
+    .nav-container{max-width:1200px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:16px}
+    .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-weight:700;font-size:1.125rem}
+    .brand img{width:44px;height:44px;border-radius:0;display:block}
+    .nav-links{display:flex;gap:1.25rem;list-style:none;margin-left:auto}
+    .nav-links a{color:#4a5568;text-decoration:none;font-weight:600;padding:8px 12px;border-radius:10px;transition:.2s ease}
+    .nav-links a:hover,.nav-links a.active{background:var(--lavender-100);color:#2d3748}
+
+    /* Hero (centered with logo + tighter text, bar under tagline width = tagline) */
+    .hero{background:#f8f7ff;padding:36px 20px;border-bottom:1px solid #eceff7}
+    .hero-inner{max-width:800px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:16px}
+    .hero-logo-slot{width:auto;height:auto;border:none;background:transparent;border-radius:0;display:flex;align-items:center;justify-content:center;overflow:visible;flex-shrink:0}
+    .hero-logo-slot img{width:90px;height:90px;object-fit:contain;display:block}
+    .hero-text{display:flex;flex-direction:column;align-items:flex-start;justify-content:center}
+    .hero-text h1{font-size:clamp(2.4rem,5vw,3.2rem);font-weight:800;margin:0 0 2px 0;color:#0f1222;line-height:1.08}
+    .hero-text p{font-size:1.2rem;margin:0;color:#2b2f3a;font-weight:600;line-height:1.22;margin-bottom:4px}
+    .hero-text p + .hero-accent{align-self:stretch;height:5px;border-radius:999px;background:linear-gradient(90deg,#7A2CD6,#FF4FA3)}
+
+    /* Sections */
+    .categories{padding:60px 0}
+    .section-title{text-align:center;font-size:2.1rem;font-weight:700;margin-bottom:42px;background:linear-gradient(135deg,#FF7E66,#FF4FA3,#7A2CD6);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+    /* Intro grid: Top Picks + Quick Browse */
+    .home-intro-grid{display:grid;grid-template-columns:1fr 350px;gap:40px;margin-bottom:60px;align-items:stretch}
+    .home-intro-grid>.left-col{display:flex}
+
+    /* Top Picks (stacked, logos on right, CTA under logo) */
+    .top-picks{background:#fff;border-radius:16px;padding:28px;border:1px solid #eceff7;flex:1;display:flex;flex-direction:column;box-shadow:0 6px 18px rgba(24,20,60,.06)}
+    .top-picks h3{font-size:1.5rem;margin-bottom:18px;text-align:center}
+    .top-picks-grid{display:flex;flex-direction:column;gap:16px}
+    .top-pick-card{background:#fff;padding:18px;border-radius:12px;border:1px solid #ffe3a6;position:relative;transition:transform .2s ease,box-shadow .2s ease;cursor:pointer;display:flex;align-items:flex-start;gap:14px;justify-content:space-between}
+    .top-pick-card::before{content:"★ TOP PICK";position:absolute;top:-10px;left:14px;background:#ffd36a;color:#000;padding:3px 10px;border-radius:8px;font-size:.72rem;font-weight:800;letter-spacing:.2px}
+    .top-pick-card:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(16,20,40,.08)}
+    .pick-content{flex:1;display:flex;flex-direction:column;margin-right:12px}
+    .pick-content h4{margin:0 0 6px 0}
+    .pick-content p{font-size:.9rem;margin:0 0 8px 0}
+    .pick-logo{width:120px;height:120px;background:#f3f4f6;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:700;color:#555;font-size:.8rem;flex-direction:column;gap:8px;padding:8px}
+    .pick-logo img{max-width:100%;max-height:74px;object-fit:contain}
+    .affiliate-cta{display:block;text-align:center;padding:8px 12px;background:#4b2ca6;color:#fff;border-radius:8px;text-decoration:none;font-weight:700;font-size:.85rem;width:100%;transition:transform .15s ease, box-shadow .15s ease, background .15s ease;margin-top:6px}
+    .affiliate-cta:hover{background:linear-gradient(90deg,#7A2CD6,#FF4FA3);box-shadow:0 6px 18px rgba(122,44,214,.35);transform:translateY(-1px)}
+    .affiliate-cta:active{transform:translateY(0)}
+
+    /* Quick Links - Updated to match Top Picks height */
+    .quick-links{background:#fff;border:1px solid #eceff7;border-radius:16px;padding:20px;box-shadow:0 6px 18px rgba(24,20,60,.06);align-self:stretch;overflow-y:auto;height:100%;max-height:544px}
+    .quick-links h3{font-size:1.2rem;margin-bottom:6px}
+    .ql-note{color:#6b7280;font-size:.9rem;margin-bottom:12px}
+    .ql-list{list-style:none}
+    .ql-divider{color:#6b7280;font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin:14px 0 8px;padding-bottom:6px;border-bottom:1px solid #eceff7}
+    .ql-item{margin-bottom:3px}
+    .ql-item a{display:block;color:#4b2ca6;text-decoration:none;padding:7px 10px;border-radius:10px;font-size:.95rem;transition:.15s ease;border-left:3px solid transparent}
+    .ql-item a:hover{background:#f4f1ff;border-left-color:#7A2CD6;color:#5b2b9b}
+
+    /* Affiliate Categories - Updated with logo space */
+    .affiliates-section{padding:60px 0;background:#fff}
+    .category-section{margin-bottom:50px}
+    .category-title{font-size:1.8rem;font-weight:700;color:#2d3748;margin-bottom:20px;padding-bottom:10px;border-bottom:2px solid #e2e8f0;scroll-margin-top:var(--nav-offset)}
+    .category-grid{display:flex;flex-direction:column;gap:20px}
+    
+    /* Updated affiliate card with logo space */
+    .affiliate-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:25px;box-shadow:0 2px 8px rgba(0,0,0,.05);transition:all .2s ease;scroll-margin-top:var(--nav-offset);position:relative;display:flex;align-items:flex-start;gap:20px;justify-content:space-between}
+    .affiliate-card:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(0,0,0,.1)}
+    
+    .affiliate-content{flex:1;display:flex;flex-direction:column}
+    .affiliate-name{font-size:1.2rem;font-weight:700;color:#2d3748;margin-bottom:6px}
+    .affiliate-description{color:#718096;margin:8px 0 0;font-size:.95rem}
+    
+    /* Logo area on the right */
+    .affiliate-logo-area{width:120px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:10px}
+    .affiliate-logo{width:120px;height:80px;background:#f7f8fa;border:1px solid #e2e8f0;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.75rem;color:#9ca3af;font-weight:600}
+    .affiliate-logo img{max-width:100%;max-height:100%;object-fit:contain}
+    
+    /* Updated CTA button */
+    .affiliate-get-deal{display:block;width:100%;padding:10px 16px;background:#4b2ca6;color:#fff;text-decoration:none;border-radius:10px;font-weight:600;text-align:center;transition:transform .15s ease, box-shadow .15s ease, background .15s ease}
+    .affiliate-get-deal:hover{background:linear-gradient(90deg,#7A2CD6,#FF4FA3);box-shadow:0 4px 12px rgba(122,44,214,.3);transform:translateY(-1px)}
+    .affiliate-get-deal:active{transform:translateY(0)}
+
+    /* About / Contact */
+    .about-section,.contact-section{padding:80px 0}
+    .about-content{max-width:800px;margin:0 auto;text-align:center}
+    .about-content h2{font-size:2.3rem;font-weight:700;margin-bottom:18px}
+    .about-content p{font-size:1.05rem;color:#4a5568;margin-bottom:16px}
+    .contact-content{max-width:600px;margin:0 auto}
+    .contact-card{background:#fff;padding:40px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,.1);text-align:center}
+    .contact-card h2{font-size:2rem;font-weight:700;margin-bottom:12px}
+    .contact-card p{color:#718096;margin-bottom:18px}
+    .contact-info{background:#f7fafc;padding:22px;border-radius:12px;margin-bottom:20px}
+    .contact-email{font-size:1.1rem;font-weight:700;color:#4b2ca6;text-decoration:none}
+
+    footer{background:#0f1222;color:#fff;text-align:center;padding:40px 0;margin-top:80px}
+
+    /* Responsive */
+    @media (max-width:1024px){
+      .home-intro-grid{grid-template-columns:1fr;gap:30px}
+      .quick-links{max-height:none;min-height:auto;height:auto}
+      .affiliate-card{flex-direction:column}
+      .affiliate-logo-area{width:100%;flex-direction:row;justify-content:center}
+      .affiliate-logo{width:150px}
+      .affiliate-get-deal{max-width:200px}
+    }
+    @media (max-width:768px){
+      .top-picks-grid{grid-template-columns:1fr}
+      .affiliate-card{flex-direction:column}
+      .affiliate-logo-area{width:100%}
+    }
+  
+    
+    /* ===== Affiliate Modal (Enhanced) ===== */
+    .modal-overlay{position:fixed;inset:0;background:rgba(15,18,34,.55);backdrop-filter:saturate(1.1) blur(3px);display:none;z-index:2000}
+    .modal-overlay.open{display:block}
+    .modal-dialog{
+      position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+      width:min(1100px,92vw);max-height:88vh;background:#fff;border-radius:18px;
+      box-shadow:0 22px 80px rgba(10,10,20,.35);
+      display:grid;grid-template-columns:3fr 1fr;overflow:hidden;border:1px solid #e6e8f2
+    }
+    .modal-left{padding:26px 26px 28px 26px;overflow-y:auto;background:#ffffff}
+    .modal-right{
+      padding:20px;display:flex;flex-direction:column;gap:14px;
+      border-left:1px solid #eceff7;background:linear-gradient(180deg, var(--lavender-100) 0%, #ffffff 40%);
+    }
+    /* Themed close button (floating, aesthetic) */
+    .modal-close{
+      position:absolute;top:10px;right:10px;display:inline-grid;place-items:center;
+      width:40px;height:40px;border-radius:12px;border:0;cursor:pointer;
+      color:#fff;font-weight:800;font-size:20px;
+      background:linear-gradient(135deg,#7A2CD6 0%, #FF4FA3 100%);
+      box-shadow:0 8px 22px rgba(122,44,214,.35), inset 0 -2px 0 rgba(0,0,0,.15);
+      transition:transform .12s ease, box-shadow .12s ease, filter .12s ease;
+    }
+    .modal-close:hover{transform:translateY(-1px);filter:saturate(1.05);box-shadow:0 10px 26px rgba(122,44,214,.42)}
+    .modal-close:active{transform:translateY(0)}
+    .modal-left h3{font-size:1.45rem;margin-bottom:8px}
+    .modal-sub{color:#6b7280;font-size:.98rem;margin-bottom:14px}
+    .modal-section{margin:18px 0}
+    .modal-section h4{font-size:1.05rem;margin-bottom:8px}
+    .modal-list{padding-left:18px}
+    .modal-list li{margin:6px 0}
+    .modal-gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}
+    .modal-thumb{background:#f7f8fa;border:1px dashed #e2e8f0;border-radius:10px;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;color:#9aa1ad;font-weight:600}
+    /* Right column polish */
+    .brand-pill{
+      align-self:flex-start;padding:6px 10px;border-radius:999px;
+      background:rgba(122,44,214,.08);color:#4b2ca6;border:1px solid rgba(122,44,214,.18);
+      font-weight:700;font-size:.78rem;letter-spacing:.02em
+    }
+    .logo-box{
+      width:100%;aspect-ratio:4/3;background:linear-gradient(135deg,#faf7ff 0%,#f6fbff 100%);
+      border:1px solid #e2e8f0;border-radius:14px;display:flex;align-items:center;justify-content:center;overflow:hidden
+    }
+    .logo-box img{max-width:100%;max-height:100%;object-fit:contain}
+    .modal-title{font-weight:800;font-size:1.12rem;margin-top:4px}
+    .deal-chip{font-size:.9rem;font-weight:800;color:#0f1222;background:#f1f5ff;border:1px solid #dde7ff;border-radius:10px;padding:8px 10px}
+    .trust-row{display:flex;align-items:center;gap:8px;color:#6b7280;font-size:.86rem}
+    .dot{width:8px;height:8px;border-radius:50%;background:#10b981;display:inline-block}
+    .mini-list{font-size:.9rem;color:#4b5563;margin-top:4px}
+    .modal-cta{
+      display:inline-block;margin-top:6px;padding:12px 14px;background:#4b2ca6;color:#fff;text-decoration:none;border-radius:12px;
+      font-weight:800;text-align:center;border:1px solid rgba(75,44,166,.2);
+      box-shadow:0 6px 16px rgba(75,44,166,.25);
+      transition:transform .12s ease, box-shadow .12s ease, background .12s ease;
+    }
+    .modal-cta:hover{background:linear-gradient(90deg,#7A2CD6,#FF4FA3);box-shadow:0 10px 24px rgba(122,44,214,.35);transform:translateY(-1px)}
+    .modal-cta:active{transform:translateY(0)}
+    .meta-row{display:grid;grid-template-columns:1fr;gap:8px;margin-top:2px}
+    @media (max-width: 900px){
+      .modal-dialog{grid-template-columns:1fr}
+      .modal-right{border-left:none;border-top:1px solid #eceff7}
+    }
+.modal-right{border-left:none;border-top:1px solid #eceff7}
+    }
+
+    /* Make affiliate cards clearly clickable */
+    .affiliate-card{
+      cursor:pointer;
+      transition:box-shadow .15s ease, border .15s ease, transform .15s ease;
+    }
+    .affiliate-card:hover{
+      box-shadow:0 0 0 3px rgba(122,44,214,.5), 0 6px 18px rgba(0,0,0,.08);
+      transform:translateY(-2px);
+    }
+
+    /* Enlarge and center the Slop Farm logo */
+    header .logo img{
+      max-height:72px; /* slightly bigger */
+      display:block;
+      margin:0 auto;
+    }
+
+    /* Adjusted spacing: bring "All Partners by Category" closer to Top Picks */
+    h2.section-title{
+      margin-top: 8px !important; /* move it up tightly */
+    }
+    h2.section-title{
+      margin-top: 32px; /* reduced from likely larger default */
+    }
+
+    /* === Spacing refinement (bring "All Partners by Category" even closer) === */
+    h2.section-title{
+      margin-top: 0 !important;    /* tighten to the previous block */
+    }
+    /* Reduce trailing space on Top Picks block if present */
+    #top-picks, .top-picks{
+      margin-bottom: 8px !important;
+      padding-bottom: 6px !important;
+    }
+
+    /* === Card polish & accessibility === */
+    .affiliate-card{
+      border-radius: 14px;
+      border:1px solid #e9ecf5;
+      background:#fff;
+    }
+    .affiliate-card:focus-visible{
+      outline: 3px solid rgba(122,44,214,.6);
+      outline-offset: 2px;
+    }
+
+    /* CTA focus states for keyboard users */
+    .affiliate-get-deal:focus-visible,
+    .modal-cta:focus-visible{
+      outline: 3px solid rgba(122,44,214,.6);
+      outline-offset: 2px;
+    }
+
+    /* Subtle section rhythm */
+    section{scroll-margin-top: var(--nav-offset, 96px);}
+    .section-title + .section-subtitle{margin-top:6px;color:#6b7280}
+
+    /* Respect reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important}
+    }
+
+    .no-flash-focus{
+      position: relative;
+      outline: 0 !important;
+      box-shadow: 0 0 0 4px rgba(122,44,214,.6), 0 10px 24px rgba(0,0,0,.10);
+      border-radius: 12px;
+      transition: box-shadow .25s ease;
+    }
+    .no-flash-focus.fade{
+      box-shadow: 0 0 0 0 rgba(122,44,214,0), 0 0 0 rgba(0,0,0,0);
+      transition: box-shadow .65s ease;
+    }
+    @media (prefers-reduced-motion: reduce){
+      .no-flash-focus, .no-flash-focus.fade{transition: none;}
+    }
+
+/* === Spacing: pull "All Partners by Category" closer to Top Picks === */
+/* Zero out any leftover bottom space in Top Picks container and its last children */
+#top-picks, .top-picks { margin-bottom: 0 !important; padding-bottom: 0 !important; }
+#top-picks > *:last-child, .top-picks > *:last-child { margin-bottom: 0 !important; padding-bottom: 0 !important; }
+/* If the heading immediately follows Top Picks, collapse the gap aggressively */
+#top-picks + h2.section-title,
+.top-picks + h2.section-title,
+#top-picks + .section h2.section-title,
+.top-picks + .section h2.section-title {
+  margin-top: 0 !important;
+}
+/* General rule for section titles to be tighter by default */
+h2.section-title { margin-top: 0 !important; }
+
+/* === Header logo: larger but centered and responsive === */
+header .logo img {
+  max-height: 96px !important; /* bigger */
+  display: block;
+  margin: 0 auto;
+}
+@media (max-width: 640px){
+  header .logo img { max-height: 72px !important; } /* prevent overflow on small screens */
+}
+
+/* === Extreme spacing tighten for "All Partners by Category" === */
+#top-picks, .top-picks { margin-bottom: 0 !important; padding-bottom: 0 !important; }
+#top-picks > *:last-child, .top-picks > *:last-child { margin-bottom: 0 !important; padding-bottom: 0 !important; }
+#top-picks + h2.section-title,
+.top-picks + h2.section-title,
+#top-picks + .section h2.section-title,
+.top-picks + .section h2.section-title {
+  margin-top: -8px !important; /* pull up further with negative margin */
+}
+h2.section-title { margin-top: -8px !important; }
+
+/* === Header logo: even larger, keep responsive === */
+header .logo img {
+  max-height: 128px !important; /* larger */
+  display: block;
+  margin: 0 auto;
+}
+@media (max-width: 640px){
+  header .logo img { max-height: 88px !important; }
+}
+
+/* === Maximum tighten: remove all spacing before "All Partners by Category" === */
+#top-picks, .top-picks { margin-bottom: 0 !important; padding-bottom: 0 !important; }
+#top-picks > *:last-child, .top-picks > *:last-child { margin-bottom: 0 !important; padding-bottom: 0 !important; }
+#top-picks + h2.section-title,
+.top-picks + h2.section-title,
+#top-picks + .section h2.section-title,
+.top-picks + .section h2.section-title {
+  margin-top: -20px !important; /* aggressively overlap upward */
+}
+h2.section-title { margin-top: -20px !important; }
+
+/* === Header logo: maximum size within header === */
+header .logo img {
+  max-height: 160px !important; /* very large */
+  display: block;
+  margin: 0 auto;
+}
+@media (max-width: 640px){
+  header .logo img { max-height: 100px !important; }
+}
+
+/* === Top Picks: enforce even padding around the cards === */
+#top-picks, .top-picks {
+  padding: 16px !important;
+  margin-bottom: 0 !important;
+  display: grid;
+  gap: 16px;
+}
+#top-picks .affiliate-card, .top-picks .affiliate-card {
+  margin: 0 !important;
+}
+
+/* === Extreme tighten: "All Partners by Category" === */
+#top-picks, .top-picks { margin-bottom: 0 !important; padding-bottom: 0 !important; }
+#top-picks > *:last-child, .top-picks > *:last-child { margin-bottom: 0 !important; padding-bottom: 0 !important; }
+#top-picks + h2.section-title,
+.top-picks + h2.section-title,
+#top-picks + .section h2.section-title,
+.top-picks + .section h2.section-title {
+  margin-top: -32px !important; /* raise even more */
+}
+h2.section-title { margin-top: -32px !important; }
+
+/* === Header logo: extra large === */
+header .logo img {
+  max-height: 192px !important;
+  display: block;
+  margin: 0 auto;
+}
+@media (max-width: 640px){
+  header .logo img { max-height: 120px !important; }
+}
+
+/* === Quick Browse: line up with Top Picks padding === */
+.quick-browse, #quick-browse, .quicklinks, .quick-links {
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+  box-sizing: border-box;
+}
+
+/* === Quick Browse: perfect match to Top Picks === */
+#top-picks, .top-picks {
+  padding: 16px !important;
+  margin-bottom: 0 !important;
+  display: grid;
+  gap: 16px;
+  box-sizing: border-box;
+}
+/* Quick Browse containers (cover common class/id names in your file) */
+.quick-browse, #quick-browse, .quicklinks, .quick-links {
+  padding: 16px !important;          /* match Top Picks */
+  margin: 0 !important;
+  display: grid;
+  gap: 16px;                          /* match Top Picks */
+  box-sizing: border-box;
+}
+/* Ensure card spacing inside both sections is uniform */
+#top-picks .affiliate-card, .top-picks .affiliate-card,
+.quick-browse .affiliate-card, #quick-browse .affiliate-card,
+.quicklinks .affiliate-card, .quick-links .affiliate-card {
+  margin: 0 !important;
+}
+
+/* === Quick Browse: even top/bottom padding to match Top Picks === */
+#top-picks, .top-picks {
+  padding: 16px !important;
+  margin: 0 !important;
+  display: grid;
+  gap: 16px;
+  box-sizing: border-box;
+}
+
+/* Common selectors for your Quick Browse container(s) */
+.quick-browse, #quick-browse, .quicklinks, .quick-links {
+  padding: 16px !important;      /* uniform on all sides */
+  margin: 0 !important;
+  display: grid;
+  gap: 16px;
+  box-sizing: border-box;
+}
+
+/* If your quick-browse has an inner scrolling content wrapper, normalize its padding too */
+.quick-browse .scroll, #quick-browse .scroll, .quicklinks .scroll, .quick-links .scroll {
+  padding-top: 16px !important;
+  padding-bottom: 16px !important;
+  box-sizing: border-box;
+}
+
+/* Cards: remove stray margins so grid gap controls spacing */
+#top-picks .affiliate-card, .top-picks .affiliate-card,
+.quick-browse .affiliate-card, #quick-browse .affiliate-card,
+.quicklinks .affiliate-card, .quick-links .affiliate-card {
+  margin: 0 !important;
+}
+
+/* === Shared section padding/gap baseline === */
+:root { --section-pad: 16px; --section-gap: 16px; }
+
+/* Top Picks */
+#top-picks, .top-picks {
+  padding: var(--section-pad) !important;
+  margin: 0 !important;
+  display: grid;
+  gap: var(--section-gap);
+  box-sizing: border-box;
+}
+
+/* Quick Browse containers (cover likely selectors) */
+.quick-browse, #quick-browse, .quicklinks, .quick-links {
+  padding: var(--section-pad) !important;
+  margin: 0 !important;
+  display: grid;
+  gap: var(--section-gap);
+  box-sizing: border-box;
+}
+
+/* Inner scroll wrappers often used inside quick browse */
+.quick-browse .scroll, #quick-browse .scroll,
+.quick-browse .scroll-area, #quick-browse .scroll-area,
+.quicklinks .scroll, .quick-links .scroll,
+.quicklinks .scroll-area, .quick-links .scroll-area,
+.quick-browse .content, #quick-browse .content {
+  padding-top: var(--section-pad) !important;
+  padding-bottom: var(--section-pad) !important;
+  padding-left: var(--section-pad) !important;
+  padding-right: var(--section-pad) !important;
+  box-sizing: border-box;
+}
+
+/* Cards inside both sections use grid gap; kill stray margins */
+#top-picks .affiliate-card, .top-picks .affiliate-card,
+.quick-browse .affiliate-card, #quick-browse .affiliate-card,
+.quicklinks .affiliate-card, .quick-links .affiliate-card {
+  margin: 0 !important;
+}
+
+/* === Fixes (2025-09-28): modal scrolling, quick-browse alignment, focus timing === */
+.modal-dialog{max-height:88vh;}
+.modal-left{overflow-y:auto; max-height:calc(88vh - 40px);} /* keep left column scrollable */
+.modal-right{max-height:calc(88vh - 40px); overflow-y:auto;} /* in case right side grows tall */
+
+/* Quick Browse: allow JS to equalize height with Top Picks on wide screens */
+@media (min-width: 1025px){
+  .home-intro-grid{align-items:stretch;}
+  .quick-links{overflow-y:auto;}
+}
+
+/* Prevent premature outline via transient class (applied only when in-view) */
+.no-flash-focus{outline: 0;}
+.no-flash-focus.active{outline: 3px solid rgba(66,153,225,.65); outline-offset: 2px; transition: outline-color .2s ease;}
+
+</style>
+
+<script>
+  // Adjust --nav-offset to match actual nav height (eliminates any gap/misalignment)
+  function setNavOffset(){
+    const nav = document.querySelector('nav');
+    if(!nav) return;
+    const h = nav.offsetHeight || 0;
+    document.documentElement.style.setProperty('--nav-offset', h + 'px');
+  }
+  window.addEventListener('load', setNavOffset);
+  window.addEventListener('resize', setNavOffset);
+</script>
+
+<style>@keyframes blueFlash{0%{box-shadow:0 0 0 0 rgba(59,130,246,.6)}35%{box-shadow:0 0 0 12px rgba(59,130,246,.18)}100%{box-shadow:0 0 0 0 rgba(59,130,246,0)}}.flash-on-view{animation:blueFlash 1.05s ease-out;outline:3px solid rgba(59,130,246,.75);outline-offset:2px;border-radius:12px}</style>
+<style>
+/* Single ~1.6s blue flash that fades out smoothly; no pulse */
+@keyframes qbOnce {
+  0%   { box-shadow: 0 0 0 10px rgba(59,130,246,0.35); outline-color: rgba(59,130,246,.85); }
+  100% { box-shadow: 0 0 0 0 rgba(59,130,246,0); outline-color: rgba(59,130,246,0); }
+}
+.qb-once-flash {
+  animation: qbOnce 1.6s ease-out forwards;
+  outline: 3px solid rgba(59,130,246,.85);
+  outline-offset: 2px;
+  border-radius: 12px;
+}
+/* Reduce chance of native focus outline causing a second blink on programmatic scroll */
+.affiliate-card:focus { outline: none; }
+</style>
+
+<style>
+@keyframes qbFlash {
+  0%   { outline: 3px solid rgba(0,123,255,0.95); outline-offset: 2px; }
+  50%  { outline: 3px solid rgba(0,123,255,0.65); outline-offset: 4px; }
+  88%  { outline: 3px solid rgba(0,123,255,0.30); outline-offset: 6px; }
+  100% { outline: 3px solid rgba(0,123,255,0.00); outline-offset: 8px; }
+}
+  70% { outline: 3px solid rgba(0,123,255,0.4); outline-offset: 4px; }
+  100% { outline: 3px solid rgba(0,123,255,0); outline-offset: 6px; }
+}
+.qb-flash { animation: qbFlash 1.6s ease-out; }
+</style>
+
+
+<!-- TSF FLASH START -->
+<style>
+@keyframes tsfFlash {
+  0%   { outline: 3px solid rgba(59,130,246,0.95); outline-offset: 2px; box-shadow: 0 0 0 10px rgba(59,130,246,0.30); }
+  60%  { outline: 3px solid rgba(59,130,246,0.45); outline-offset: 5px;  box-shadow: 0 0 0 4px  rgba(59,130,246,0.12); }
+  100% { outline: 3px solid rgba(59,130,246,0.00); outline-offset: 8px;  box-shadow: 0 0 0 0   rgba(59,130,246,0.00); }
+}
+.tsf-flash-once {
+  animation: tsfFlash 1.4s ease-out forwards;
+  border-radius: 12px;
+}
+</style>
+<!-- TSF FLASH END -->
+
+</head>
+<body>
+  <nav>
+    <div class="nav-container">
+      <a href="#" class="brand" data-page="home">
+        <img src="assets/logo.png" alt="The Slop Farm logo" />
+        <span>The Slop Farm</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#" class="nav-link active" data-page="home">Home</a></li>
+        <li><a href="#" class="nav-link" data-page="about">About</a></li>
+        <li><a href="#" class="nav-link" data-page="contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Home Page -->
+  <div class="page active" id="home">
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="hero-logo-slot" aria-hidden="true">
+          <img src="assets/logo.png" alt="The Slop Farm logo placeholder" />
+        </div>
+        <div class="hero-text">
+          <h1>The Slop Farm</h1>
+          <p>Educational media – made simple</p>
+          <div class="hero-accent" aria-hidden="true"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="categories">
+      <div class="container">
+        <h2 class="section-title">Our Partners</h2>
+
+        <div class="home-intro-grid">
+          <div class="left-col">
+            <div class="top-picks">
+              <h3>★ Top Recommendations</h3>
+              <div class="top-picks-grid">
+                <div class="top-pick-card" data-jump="#finance-1">
+                  <div class="pick-content">
+                    <h4>Top Pick #1</h4>
+                    <p>This partner offers an extensive suite of financial tools that help you manage budgeting, track spending, and invest smarter, all in one streamlined platform designed for modern users.</p>
+                  </div>
+                  <div class="pick-logo">
+                    <img src="/assets/sample-logo1.png" alt="Partner Logo" />
+                    <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-cta">Get Deal</a>
+                  </div>
+                </div>
+                <div class="top-pick-card" data-jump="#finance-2">
+                  <div class="pick-content">
+                    <h4>Top Pick #2</h4>
+                    <p>A reliable service for individuals and businesses, providing competitive rates, transparent terms, and excellent customer support to make managing your money effortless and secure.</p>
+                  </div>
+                  <div class="pick-logo">
+                    <img src="/assets/sample-logo2.png" alt="Partner Logo" />
+                    <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-cta">Get Deal</a>
+                  </div>
+                </div>
+                <div class="top-pick-card" data-jump="#business-1">
+                  <div class="pick-content">
+                    <h4>Top Pick #3</h4>
+                    <p>An innovative platform tailored to entrepreneurs, delivering resources that streamline workflows, enhance productivity, and support sustainable business growth with ease.</p>
+                  </div>
+                  <div class="pick-logo">
+                    <img src="/assets/sample-logo3.png" alt="Partner Logo" />
+                    <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-cta">Get Deal</a>
+                  </div>
+                </div>
+                <div class="top-pick-card" data-jump="#technology-1">
+                  <div class="pick-content">
+                    <h4>Top Pick #4</h4>
+                    <p>This technology partner provides state-of-the-art solutions with user-friendly design, making advanced tools accessible for everyone from casual users to industry professionals.</p>
+                  </div>
+                  <div class="pick-logo">
+                    <img src="/assets/sample-logo4.png" alt="Partner Logo" />
+                    <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-cta">Get Deal</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <aside class="quick-links" aria-label="Quick browse">
+            <h3>Quick Browse</h3>
+            <p class="ql-note">Jump straight to a partner below.</p>
+            <ul class="ql-list">
+              <li class="ql-divider">Auto & Mechanical</li>
+              <li class="ql-item"><a href="#auto-1">Auto Partner #1</a></li>
+              <li class="ql-item"><a href="#auto-2">Auto Partner #2</a></li>
+
+              <li class="ql-divider">Business</li>
+              <li class="ql-item"><a href="#business-1">Business Partner #1</a></li>
+              <li class="ql-item"><a href="#business-2">Business Partner #2</a></li>
+
+              <li class="ql-divider">Cooking</li>
+              <li class="ql-item"><a href="#cooking-1">Cooking Partner #1</a></li>
+              <li class="ql-item"><a href="#cooking-2">Cooking Partner #2</a></li>
+
+              <li class="ql-divider">Education</li>
+              <li class="ql-item"><a href="#education-1">Education Partner #1</a></li>
+              <li class="ql-item"><a href="#education-2">Education Partner #2</a></li>
+
+              <li class="ql-divider">Finance</li>
+              <li class="ql-item"><a href="#finance-1">Finance Partner #1</a></li>
+              <li class="ql-item"><a href="#finance-2">Finance Partner #2</a></li>
+
+              <li class="ql-divider">Gaming</li>
+              <li class="ql-item"><a href="#gaming-1">Gaming Partner #1</a></li>
+              <li class="ql-item"><a href="#gaming-2">Gaming Partner #2</a></li>
+
+              <li class="ql-divider">Government</li>
+              <li class="ql-item"><a href="#government-1">Government Partner #1</a></li>
+              <li class="ql-item"><a href="#government-2">Government Partner #2</a></li>
+
+              <li class="ql-divider">Health</li>
+              <li class="ql-item"><a href="#health-1">Health Partner #1</a></li>
+              <li class="ql-item"><a href="#health-2">Health Partner #2</a></li>
+
+              <li class="ql-divider">History</li>
+              <li class="ql-item"><a href="#history-1">History Partner #1</a></li>
+              <li class="ql-item"><a href="#history-2">History Partner #2</a></li>
+
+              <li class="ql-divider">Interface</li>
+              <li class="ql-item"><a href="#interface-1">Interface Partner #1</a></li>
+              <li class="ql-item"><a href="#interface-2">Interface Partner #2</a></li>
+
+              <li class="ql-divider">Law</li>
+              <li class="ql-item"><a href="#law-1">Law Partner #1</a></li>
+              <li class="ql-item"><a href="#law-2">Law Partner #2</a></li>
+
+              <li class="ql-divider">Medical</li>
+              <li class="ql-item"><a href="#medical-1">Medical Partner #1</a></li>
+              <li class="ql-item"><a href="#medical-2">Medical Partner #2</a></li>
+
+              <li class="ql-divider">Miscellaneous</li>
+              <li class="ql-item"><a href="#misc-1">Misc Partner #1</a></li>
+              <li class="ql-item"><a href="#misc-2">Misc Partner #2</a></li>
+
+              <li class="ql-divider">News</li>
+              <li class="ql-item"><a href="#news-1">News Partner #1</a></li>
+              <li class="ql-item"><a href="#news-2">News Partner #2</a></li>
+
+              <li class="ql-divider">Science</li>
+              <li class="ql-item"><a href="#science-1">Science Partner #1</a></li>
+              <li class="ql-item"><a href="#science-2">Science Partner #2</a></li>
+
+              <li class="ql-divider">Social</li>
+              <li class="ql-item"><a href="#social-1">Social Partner #1</a></li>
+              <li class="ql-item"><a href="#social-2">Social Partner #2</a></li>
+
+              <li class="ql-divider">Software</li>
+              <li class="ql-item"><a href="#software-1">Software Partner #1</a></li>
+              <li class="ql-item"><a href="#software-2">Software Partner #2</a></li>
+
+              <li class="ql-divider">Sports</li>
+              <li class="ql-item"><a href="#sports-1">Sports Partner #1</a></li>
+              <li class="ql-item"><a href="#sports-2">Sports Partner #2</a></li>
+
+              <li class="ql-divider">Technology</li>
+              <li class="ql-item"><a href="#technology-1">Technology Partner #1</a></li>
+              <li class="ql-item"><a href="#technology-2">Technology Partner #2</a></li>
+
+              <li class="ql-divider">Travel</li>
+              <li class="ql-item"><a href="#travel-1">Travel Partner #1</a></li>
+              <li class="ql-item"><a href="#travel-2">Travel Partner #2</a></li>
+            </ul>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- All Affiliates -->
+    <section class="affiliates-section">
+      <div class="container">
+        <h2 class="section-title">All Partners by Category</h2>
+
+        <!-- Auto & Mechanical -->
+        <div class="category-section" id="auto">
+          <h3 class="category-title">Auto & Mechanical</h3>
+          <div class="category-grid">
+            <div class="affiliate-card" id="auto-1">
+              <div class="affiliate-content">
+                <div class="affiliate-name">Auto Partner #1</div>
+                <p class="affiliate-description">Reliable diagnostics, parts, and service plans to keep your vehicle running smoothly—backed by nationwide support.</p>
+              </div>
+              <div class="affiliate-logo-area">
+                <div class="affiliate-logo">Logo</div>
+                <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-get-deal">Get Deal</a>
+              </div>
+            </div>
+            <div class="affiliate-card" id="auto-2">
+              <div class="affiliate-content">
+                <div class="affiliate-name">Auto Partner #2</div>
+                <p class="affiliate-description">Premium tools and maintenance kits for DIY repairs and weekend projects with clear, step-by-step guides.</p>
+              </div>
+              <div class="affiliate-logo-area">
+                <div class="affiliate-logo">Logo</div>
+                <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-get-deal">Get Deal</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Business -->
+        <div class="category-section" id="business">
+          <h3 class="category-title">Business</h3>
+          <div class="category-grid">
+            <div class="affiliate-card" id="business-1">
+              <div class="affiliate-content">
+                <div class="affiliate-name">Business Partner #1</div>
+                <p class="affiliate-description">Bookkeeping, invoicing, and payroll in one hub—perfect for freelancers and growing teams.</p>
+              </div>
+              <div class="affiliate-logo-area">
+                <div class="affiliate-logo">Logo</div>
+                <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-get-deal">Get Deal</a>
+              </div>
+            </div>
+            <div class="affiliate-card" id="business-2">
+              <div class="affiliate-content">
+                <div class="affiliate-name">Business Partner #2</div>
+                <p class="affiliate-description">Formation services (LLC, S-Corp), registered agent, and compliance reminders to keep you on track.</p>
+              </div>
+              <div class="affiliate-logo-area">
+                <div class="affiliate-logo">Logo</div>
+                <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-get-deal">Get Deal</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cooking -->
+        <div class="category-section" id="cooking">
+          <h3 class="category-title">Cooking</h3>
+          <div class="category-grid">
+            <div class="affiliate-card" id="cooking-1">
+              <div class="affiliate-content">
+                <div class="affiliate-name">Cooking Partner #1</div>
+                <p class="affiliate-description">Chef-curated pantry staples and spices with simple recipes to upgrade weeknight dinners.</p>
+              </div>
+              <div class="affiliate-logo-area">
+                <div class="affiliate-logo">Logo</div>
+                <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-get-deal">Get Deal</a>
+              </div>
+            </div>
+            <div class="affiliate-card" id="cooking-2">
+              <div class="affiliate-content">
+                <div class="affiliate-name">Cooking Partner #2</div>
+                <p class="affiliate-description">Kitchen gear built to last—nonstick, knives, and cookware bundles at member pricing.</p>
+              </div>
+              <div class="affiliate-logo-area">
+                <div class="affiliate-logo">Logo</div>
+                <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-get-deal">Get Deal</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Education -->
+        <div class="category-section" id="education">
+          <h3 class="category-title">Education</h3>
+          <div class="category-grid">
+            <div class="affiliate-card" id="education-1">
+              <div class="affiliate-content">
+                <div class="affiliate-name">Education Partner #1</div>
+                <p class="affiliate-description">Self-paced courses in math, science, and writing—ideal for exam prep and skill refreshers.</p>
+              </div>
+              <div class="affiliate-logo-area">
+                <div class="affiliate-logo">Logo</div>
+                <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-get-deal">Get Deal</a>
+              </div>
+            </div>
+            <div class="affiliate-card" id="education-2">
+              <div class="affiliate-content">
+                <div class="affiliate-name">Education Partner #2</div>
+                <p class="affiliate-description">Certificate programs and live cohorts taught by industry experts with career support.</p>
+              </div>
+              <div class="affiliate-logo-area">
+                <div class="affiliate-logo">Logo</div>
+                <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-get-deal">Get Deal</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Finance -->
+        <div class="category-section" id="finance">
+          <h3 class="category-title">Finance</h3>
+          <div class="category-grid">
+            <div class="affiliate-card" id="finance-1">
+              <div class="affiliate-content">
+                <div class="affiliate-name">Finance Partner #1</div>
+                <p class="affiliate-description">Budgeting, savings vaults, and automated insights that help you stay on top of cash flow.</p>
+              </div>
+              <div class="affiliate-logo-area">
+                <div class="affiliate-logo">Logo</div>
+                <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-get-deal">Get Deal</a>
+              </div>
+            </div>
+            <div class="affiliate-card" id="finance-2">
+              <div class="affiliate-content">
+                <div class="affiliate-name">Finance Partner #2</div>
+                <p class="affiliate-description">Commission-free investing and fractional shares with robust research tools for beginners.</p>
+              </div>
+              <div class="affiliate-logo-area">
+                <div class="affiliate-logo">Logo</div>
+                <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-get-deal">Get Deal</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gaming -->
+        <div class="category-section" id="gaming">
+          <h3 class="category-title">Gaming</h3>
+          <div class="category-grid">
+            <div class="affiliate-card" id="gaming-1">
+              <div class="affiliate-content">
+                <div class="affiliate-name">Gaming Partner #1</div>
+                <p class="affiliate-description">Performance peripherals (mice, keyboards, headsets) tuned for e-sports responsiveness.</p>
+              </div>
+              <div class="affiliate-logo-area">
+                <div class="affiliate-logo">Logo</div>
+                <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-get-deal">Get Deal</a>
+              </div>
+            </div>
+            <div class="affiliate-card" id="gaming-2">
+              <div class="affiliate-content">
+                <div class="affiliate-name">Gaming Partner #2</div>
+                <p class="affiliate-description">Game keys and subscriptions at discount prices—safe purchases delivered instantly.</p>
+              </div>
+              <div class="affiliate-logo-area">
+                <div class="affiliate-logo">Logo</div>
+                <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-get-deal">Get Deal</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Government -->
+        <div class="category-section" id="government">
+          <h3 class="category-title">Government</h3>
+          <div class="category-grid">
+            <div class="affiliate-card" id="government-1">
+              <div class="affiliate-content">
+                <div class="affiliate-name">Government Partner #1</div>
+                <p class="affiliate-description">Guides and tools for permits, records, and benefits—clear steps with official links.</p>
+              </div>
+              <div class="affiliate-logo-area">
+                <div class="affiliate-logo">Logo</div>
+                <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-get-deal">Get Deal</a>
+              </div>
+            </div>
+            <div class="affiliate-card" id="government-2">
+              <div class="affiliate-content">
+                <div class="affiliate-name">Government Partner #2</div>
+                <p class="affiliate-description">Senior-friendly resources for taxes, Medicare, and local programs with phone support.</p>
+              </div>
+              <div class="affiliate-logo-area">
+                <div class="affiliate-logo">Logo</div>
+                <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-get-deal">Get Deal</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Health -->
+        <div class="category-section" id="health">
+          <h3 class="category-title">Health</h3>
+          <div class="category-grid">
+            <div class="affiliate-card" id="health-1">
+              <div class="affiliate-content">
+                <div class="affiliate-name">Health Partner #1</div>
+                <p class="affiliate-description">Evidence-based supplements and lab testing with physician-reviewed protocols.</p>
+              </div>
+              <div class="affiliate-logo-area">
+                <div class="affiliate-logo">Logo</div>
+                <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-get-deal">Get Deal</a>
+              </div>
+            </div>
+            <div class="affiliate-card" id="health-2">
+              <div class="affiliate-content">
+                <div class="affiliate-name">Health Partner #2</div>
+                <p class="affiliate-description">Telehealth visits and prescription delivery—transparent pricing, no surprises.</p>
+              </div>
+              <div class="affiliate-logo-area">
+                <div class="affiliate-logo">Logo</div>
+                <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-get-deal">Get Deal</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- History -->
+        <div class="category-section" id="history">
+          <h3 class="category-title">History</h3>
+          <div class="category-grid">
+            <div class="affiliate-card" id="history-1">
+              <div class="affiliate-content">
+                <div class="affiliate-name">History Partner #1</div>
+                <p class="affiliate-description">Documentaries, lectures, and archives that make the past clear and engaging.</p>
+              </div>
+              <div class="affiliate-logo-area">
+                <div class="affiliate-logo">Logo</div>
+                <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-get-deal">Get Deal</a>
+              </div>
+            </div>
+            <div class="affiliate-card" id="history-2">
+              <div class="affiliate-content">
+                <div class="affiliate-name">History Partner #2</div>
+                <p class="affiliate-description">Primary sources and timelines for students and enthusiasts—organized by era.</p>
+              </div>
+              <div class="affiliate-logo-area">
+                <div class="affiliate-logo">Logo</div>
+                <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-get-deal">Get Deal</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interface -->
+        <div class="category-section" id="interface">
+          <h3 class="category-title">Interface</h3>
+          <div class="category-grid">
+            <div class="affiliate-card" id="interface-1">
+              <div class="affiliate-content">
+                <div class="affiliate-name">Interface Partner #1</div>
+                <p class="affiliate-description">UI kits and icon packs that ship with accessible components and tokens.</p>
+              </div>
+              <div class="affiliate-logo-area">
+                <div class="affiliate-logo">Logo</div>
+                <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-get-deal">Get Deal</a>
+              </div>
+            </div>
+            <div class="affiliate-card" id="interface-2">
+              <div class="affiliate-content">
+                <div class="affiliate-name">Interface Partner #2</div>
+                <p class="affiliate-description">Prototyping tools with real-time collaboration and dev-ready exports.</p>
+              </div>
+              <div class="affiliate-logo-area">
+                <div class="affiliate-logo">Logo</div>
+                <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-get-deal">Get Deal</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Law -->
+        <div class="category-section" id="law">
+          <h3 class="category-title">Law</h3>
+          <div class="category-grid">
+            <div class="affiliate-card" id="law-1">
+              <div class="affiliate-content">
+                <div class="affiliate-name">Law Partner #1</div>
+                <p class="affiliate-description">Attorney-reviewed templates for contracts, NDAs, and service agreements.</p>
+              </div>
+              <div class="affiliate-logo-area">
+                <div class="affiliate-logo">Logo</div>
+                <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-get-deal">Get Deal</a>
+              </div>
+            </div>
+            <div class="affiliate-card" id="law-2">
+              <div class="affiliate-content">
+                <div class="affiliate-name">Law Partner #2</div>
+                <p class="affiliate-description">On-demand legal consults for small businesses with clear, flat rates.</p>
+              </div>
+              <div class="affiliate-logo-area">
+                <div class="affiliate-logo">Logo</div>
+                <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-get-deal">Get Deal</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Medical -->
+        <div class="category-section" id="medical">
+          <h3 class="category-title">Medical</h3>
+          <div class="category-grid">
+            <div class="affiliate-card" id="medical-1">
+              <div class="affiliate-content">
+                <div class="affiliate-name">Medical Partner #1</div>
+                <p class="affiliate-description">Clinical education resources and CE credits for nurses and allied health pros.</p>
+              </div>
+              <div class="affiliate-logo-area">
+                <div class="affiliate-logo">Logo</div>
+                <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-get-deal">Get Deal</a>
+              </div>
+            </div>
+            <div class="affiliate-card" id="medical-2">
+              <div class="affiliate-content">
+                <div class="affiliate-name">Medical Partner #2</div>
+                <p class="affiliate-description">At-home devices and monitoring subscriptions with secure data dashboards.</p>
+              </div>
+              <div class="affiliate-logo-area">
+                <div class="affiliate-logo">Logo</div>
+                <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-get-deal">Get Deal</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Miscellaneous -->
+        <div class="category-section" id="misc">
+          <h3 class="category-title">Miscellaneous</h3>
+          <div class="category-grid">
+            <div class="affiliate-card" id="misc-1">
+              <div class="affiliate-content">
+                <div class="affiliate-name">Misc Partner #1</div>
+                <p class="affiliate-description">Everyday tools and subscriptions that don’t fit a single box—but add real value.</p>
+              </div>
+              <div class="affiliate-logo-area">
+                <div class="affiliate-logo">Logo</div>
+                <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-get-deal">Get Deal</a>
+              </div>
+            </div>
+            <div class="affiliate-card" id="misc-2">
+              <div class="affiliate-content">
+                <div class="affiliate-name">Misc Partner #2</div>
+                <p class="affiliate-description">Cross-category bundles curated by our team to save you time and money.</p>
+              </div>
+              <div class="affiliate-logo-area">
+                <div class="affiliate-logo">Logo</div>
+                <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-get-deal">Get Deal</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- News -->
+        <div class="category-section" id="news">
+          <h3 class="category-title">News</h3>
+          <div class="category-grid">
+            <div class="affiliate-card" id="news-1">
+              <div class="affiliate-content">
+                <div class="affiliate-name">News Partner #1</div>
+                <p class="affiliate-description">Balanced reporting and deep dives with reader-first design and no clutter.</p>
+              </div>
+              <div class="affiliate-logo-area">
+                <div class="affiliate-logo">Logo</div>
+                <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-get-deal">Get Deal</a>
+              </div>
+            </div>
+            <div class="affiliate-card" id="news-2">
+              <div class="affiliate-content">
+                <div class="affiliate-name">News Partner #2</div>
+                <p class="affiliate-description">Curated newsletters that summarize the day’s most important stories in minutes.</p>
+              </div>
+              <div class="affiliate-logo-area">
+                <div class="affiliate-logo">Logo</div>
+                <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-get-deal">Get Deal</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Science -->
+        <div class="category-section" id="science">
+          <h3 class="category-title">Science</h3>
+          <div class="category-grid">
+            <div class="affiliate-card" id="science-1">
+              <div class="affiliate-content">
+                <div class="affiliate-name">Science Partner #1</div>
+                <p class="affiliate-description">Hands-on kits and simulations that make complex topics intuitive and fun.</p>
+              </div>
+              <div class="affiliate-logo-area">
+                <div class="affiliate-logo">Logo</div>
+                <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-get-deal">Get Deal</a>
+              </div>
+            </div>
+            <div class="affiliate-card" id="science-2">
+              <div class="affiliate-content">
+                <div class="affiliate-name">Science Partner #2</div>
+                <p class="affiliate-description">Journal access and research summaries distilled for students and educators.</p>
+              </div>
+              <div class="affiliate-logo-area">
+                <div class="affiliate-logo">Logo</div>
+                <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-get-deal">Get Deal</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Social -->
+        <div class="category-section" id="social">
+          <h3 class="category-title">Social</h3>
+          <div class="category-grid">
+            <div class="affiliate-card" id="social-1">
+              <div class="affiliate-content">
+                <div class="affiliate-name">Social Partner #1</div>
+                <p class="affiliate-description">Scheduling, analytics, and cross-posting to grow your audience with less effort.</p>
+              </div>
+              <div class="affiliate-logo-area">
+                <div class="affiliate-logo">Logo</div>
+                <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-get-deal">Get Deal</a>
+              </div>
+            </div>
+            <div class="affiliate-card" id="social-2">
+              <div class="affiliate-content">
+                <div class="affiliate-name">Social Partner #2</div>
+                <p class="affiliate-description">Community platforms with memberships, courses, and chat under one roof.</p>
+              </div>
+              <div class="affiliate-logo-area">
+                <div class="affiliate-logo">Logo</div>
+                <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-get-deal">Get Deal</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Software -->
+        <div class="category-section" id="software">
+          <h3 class="category-title">Software</h3>
+          <div class="category-grid">
+            <div class="affiliate-card" id="software-1">
+              <div class="affiliate-content">
+                <div class="affiliate-name">Software Partner #1</div>
+                <p class="affiliate-description">All-in-one productivity suite—docs, spreadsheets, wikis, and automation in one place.</p>
+              </div>
+              <div class="affiliate-logo-area">
+                <div class="affiliate-logo">Logo</div>
+                <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-get-deal">Get Deal</a>
+              </div>
+            </div>
+            <div class="affiliate-card" id="software-2">
+              <div class="affiliate-content">
+                <div class="affiliate-name">Software Partner #2</div>
+                <p class="affiliate-description">Creative software for design, video, and audio with generous student pricing.</p>
+              </div>
+              <div class="affiliate-logo-area">
+                <div class="affiliate-logo">Logo</div>
+                <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-get-deal">Get Deal</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sports -->
+        <div class="category-section" id="sports">
+          <h3 class="category-title">Sports</h3>
+          <div class="category-grid">
+            <div class="affiliate-card" id="sports-1">
+              <div class="affiliate-content">
+                <div class="affiliate-name">Sports Partner #1</div>
+                <p class="affiliate-description">Training plans and wearables to track running, cycling, and strength goals.</p>
+              </div>
+              <div class="affiliate-logo-area">
+                <div class="affiliate-logo">Logo</div>
+                <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-get-deal">Get Deal</a>
+              </div>
+            </div>
+            <div class="affiliate-card" id="sports-2">
+              <div class="affiliate-content">
+                <div class="affiliate-name">Sports Partner #2</div>
+                <p class="affiliate-description">High-performance apparel and footwear with athlete-tested fabrics and fits.</p>
+              </div>
+              <div class="affiliate-logo-area">
+                <div class="affiliate-logo">Logo</div>
+                <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-get-deal">Get Deal</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Technology -->
+        <div class="category-section" id="technology">
+          <h3 class="category-title">Technology</h3>
+          <div class="category-grid">
+            <div class="affiliate-card" id="technology-1">
+              <div class="affiliate-content">
+                <div class="affiliate-name">Technology Partner #1</div>
+                <p class="affiliate-description">Laptops and accessories tuned for creators—calibrated displays and quiet power.</p>
+              </div>
+              <div class="affiliate-logo-area">
+                <div class="affiliate-logo">Logo</div>
+                <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-get-deal">Get Deal</a>
+              </div>
+            </div>
+            <div class="affiliate-card" id="technology-2">
+              <div class="affiliate-content">
+                <div class="affiliate-name">Technology Partner #2</div>
+                <p class="affiliate-description">Cloud storage and backup with encrypted sync across desktop and mobile.</p>
+              </div>
+              <div class="affiliate-logo-area">
+                <div class="affiliate-logo">Logo</div>
+                <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-get-deal">Get Deal</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Travel -->
+        <div class="category-section" id="travel">
+          <h3 class="category-title">Travel</h3>
+          <div class="category-grid">
+            <div class="affiliate-card" id="travel-1">
+              <div class="affiliate-content">
+                <div class="affiliate-name">Travel Partner #1</div>
+                <p class="affiliate-description">Flight and hotel search with transparent fees and powerful flexible-date tools.</p>
+              </div>
+              <div class="affiliate-logo-area">
+                <div class="affiliate-logo">Logo</div>
+                <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-get-deal">Get Deal</a>
+              </div>
+            </div>
+            <div class="affiliate-card" id="travel-2">
+              <div class="affiliate-content">
+                <div class="affiliate-name">Travel Partner #2</div>
+                <p class="affiliate-description">Travel insurance and medical coverage with straightforward claims support.</p>
+              </div>
+              <div class="affiliate-logo-area">
+                <div class="affiliate-logo">Logo</div>
+                <a href="https://example.com" target="_blank" rel="noopener" class="affiliate-get-deal">Get Deal</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /.container -->
+    </section>
+  </div><!-- /#home -->
+
+  <!-- About Page -->
+  <div class="page" id="about">
+    <section class="about-section">
+      <div class="about-content">
+        <h2>About The Slop Farm</h2>
+        <p><strong>The Slop Farm</strong> is a media network focused on delivering clear, accessible educational content. We simplify complex subjects and present them in formats designed for practical understanding.</p>
+        <p>Alongside our video programming, this site functions as a curated affiliate hub. We highlight tools and services that align with our mission to make learning approachable and useful. Some links are affiliate links; if you choose to purchase through them, we may earn a commission at no additional cost to you. We recommend partners we believe add real value.</p>
+    </div>
+    </section>
+  </div>
+
+  <!-- Contact Page -->
+  <div class="page" id="contact">
+    <section class="contact-section">
+      <div class="contact-content">
+        <div class="contact-card">
+          <h2>Contact Us</h2>
+          <p>For all inquiries, please reach out by email.</p>
+          <div class="contact-info">
+            <a class="contact-email" href="mailto:theslopfarm@gmail.com">theslopfarm@gmail.com</a>
+          </div>
+          <p>We typically reply within 1–2 business days.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  
+  <!-- Affiliate Details Modal -->
+  <div class="modal-overlay" id="affiliateModal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-dialog" role="document">
+      <button class="modal-close" id="modalClose" aria-label="Close">×</button>
+      <div class="modal-left" id="modalLeft">
+        <h3 id="modalName">Partner Name</h3>
+        <p class="modal-sub" id="modalSub">A concise summary of what this partner offers.</p>
+        <div class="modal-gallery" aria-hidden="true">
+          <div class="modal-thumb">Image</div>
+          <div class="modal-thumb">Image</div>
+          <div class="modal-thumb">Image</div>
+        </div>
+        <div class="modal-body" id="modalBody">
+        <div class="modal-section">
+          <h4>Overview</h4>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at condimentum augue. Praesent nec urna vitae elit viverra tincidunt. Sed eget nisl at nibh pulvinar feugiat. Maecenas ullamcorper, arcu at sagittis convallis, magna orci vehicula nibh.</p>
+          <p>Integer luctus, nibh vitae ornare luctus, lacus ipsum bibendum justo, sed iaculis urna libero ac erat. Donec gravida sem vel velit hendrerit, ut auctor sapien posuere. Suspendisse potenti. Nam in tempor eros. Phasellus dignissim dui at leo gravida.</p>
+        </div>
+        <div class="modal-section">
+          <h4>Highlights</h4>
+          <ul class="modal-list">
+            <li>Seamless onboarding and simple billing that scales with usage.</li>
+            <li>Strong privacy posture with SOC2-aligned controls and transparent data policy.</li>
+            <li>Responsive support with dedicated success resources for growth tiers.</li>
+            <li>Modern API surface and clear documentation for fast integration.</li>
+          </ul>
+        </div>
+        <div class="modal-section">
+          <h4>Use Cases</h4>
+          <p>Curabitur venenatis viverra nunc, a ultrices elit gravida vel. Suspendisse bibendum, tortor eget lobortis semper, dui eros dictum arcu, non pretium lorem libero id arcu.</p>
+          <p>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Sed vitae elementum tellus. Nam sed metus a lectus porta malesuada in sed augue.</p>
+          <p>Phasellus semper, quam vitae vehicula bibendum, neque enim tincidunt leo, sit amet rhoncus dui tortor nec justo. Nullam et urna nec libero luctus ultricies.</p>
+          <p>Duis efficitur, libero a mollis pellentesque, magna mi tempus ex, id efficitur ligula neque a odio. Pellentesque a accumsan nisl. Integer a finibus nunc, ac ultricies felis.</p>
+          <p>Donec pulvinar efficitur justo, id aliquet risus iaculis quis. Sed mattis justo ac lacus tempus, vitae tincidunt metus gravida.</p>
+        </div>
+        <div class="modal-section">
+          <h4>Technical Notes</h4>
+          <ul class="modal-list">
+            <li>Latency targets under typical load remain &lt; 150ms for core endpoints.</li>
+            <li>All SDKs are open-source with permissive licensing.</li>
+            <li>Webhooks support signed requests and replay protection.</li>
+            <li>Data residency options available for regulated regions.</li>
+          </ul>
+        </div>
+    
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at condimentum augue. Praesent nec urna vitae elit viverra tincidunt. Sed eget nisl at nibh pulvinar feugiat. Maecenas ullamcorper, arcu at sagittis convallis, magna orci vehicula nibh, id sagittis tellus magna vitae magna.</p>
+          <p>Integer luctus, nibh vitae ornare luctus, lacus ipsum bibendum justo, sed iaculis urna libero ac erat. Donec gravida sem vel velit hendrerit, ut auctor sapien posuere. Suspendisse potenti. Nam in tempor eros. Phasellus dignissim dui at leo gravida, nec varius lorem dictum.</p>
+          <p>Curabitur venenatis viverra nunc, a ultrices elit gravida vel. Suspendisse bibendum, tortor eget lobortis semper, dui eros dictum arcu, non pretium lorem libero id arcu.</p>
+        </div>
+      </div>
+      <aside class="modal-right">
+        <span class="brand-pill">Verified Partner</span>
+        <div class="logo-box" id="modalLogo" aria-label="Partner logo">Logo</div>
+        <div class="modal-title" id="modalTitle">Service Name</div>
+        <div class="deal-chip" id="modalDeal">Special deal details go here.</div>
+<div class="trust-row"><span class="dot"></span> Live • Secure checkout</div>
+<div class="mini-list">What you get:</div>
+<div class="meta-row">
+  <div>• Priority support</div>
+  <div>• Cancel anytime</div>
+  <div>• 30‑day guarantee</div>
+</div>
+        <a class="modal-cta" id="modalCta" href="https://example.com" target="_blank" rel="noopener">Get Deal</a>
+      </aside>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <p>&copy; <span id="year"></span> The Slop Farm. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Dynamic year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Page navigation
+    const navLinks = document.querySelectorAll('.nav-link, .brand');
+    const pages = document.querySelectorAll('.page');
+    function showPage(id){
+      pages.forEach(p => p.classList.toggle('active', p.id === id));
+      navLinks.forEach(a => a.classList.toggle('active', a.dataset.page === id));
+      // Scroll to top when changing pages
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    navLinks.forEach(a=>{
+      a.addEventListener('click', e=>{
+        e.preventDefault();
+        const page = a.dataset.page || 'home';
+        showPage(page);
+      });
+    });
+
+    // Smooth in-page jump + flash highlight
+    );
+      // Delay to apply flash after scroll starts
+      setTimeout(()=>el.classList.add('jump-flash'), 200);
+    }
+
+    // Quick-links
+    document.querySelectorAll('.quick-links a[href^="#"]').forEach(link=>{
+      link.addEventListener('click', e=>{
+        e.preventDefault();
+        const target = link.getAttribute('href');
+        // Ensure we're on Home page where the anchors exist
+        showPage('home');
+        jumpTo(target);
+      });
+    });
+
+    // Top-pick cards jumpers
+    document.querySelectorAll('.top-pick-card').forEach(card=>{
+      card.addEventListener('click', ()=>{
+        const target = card.getAttribute('data-jump');
+        if(target){ showPage('home'); jumpTo(target); }
+      });
+    });
+
+    // If URL has hash, try to jump on load
+    window.addEventListener('load', ()=>{
+      const hash = window.location.hash;
+      if(hash){
+        showPage('home');
+        jumpTo(hash);
+      }
+    });
+  </script>
+<script>
+
+    // ===== Affiliate Card Modal =====
+    (function(){
+      const overlay = document.getElementById('affiliateModal');
+      const closeBtn = document.getElementById('modalClose');
+      const nameEl = document.getElementById('modalName');
+      const subEl  = document.getElementById('modalSub');
+      const bodyEl = document.getElementById('modalBody');
+      const logoEl = document.getElementById('modalLogo');
+      const titleEl= document.getElementById('modalTitle');
+      const dealEl = document.getElementById('modalDeal');
+      const ctaEl  = document.getElementById('modalCta');
+
+      function openModal(){
+        overlay.classList.add('open');
+        overlay.setAttribute('aria-hidden','false');
+        document.body.style.overflow='hidden';
+      }
+      function closeModal(){
+        overlay.classList.remove('open');
+        overlay.setAttribute('aria-hidden','true');
+        document.body.style.overflow='';
+      }
+
+      // Close interactions
+      closeBtn.addEventListener('click', closeModal);
+      overlay.addEventListener('click', (e)=>{
+        if(e.target === overlay) closeModal();
+      });
+      window.addEventListener('keydown', (e)=>{
+        if(e.key === 'Escape') closeModal();
+      });
+
+      // Delegate affiliate card clicks
+      document.querySelectorAll('.affiliate-card').forEach(card => {
+        card.addEventListener('click', (e)=>{
+          // If clicking the dedicated 'Get Deal' button inside the card, do nothing (let it navigate)
+          if(e.target.closest('.affiliate-get-deal')) return;
+
+          // Extract basics
+          const name = card.querySelector('.affiliate-name')?.textContent?.trim() || 'Partner';
+          const desc = card.querySelector('.affiliate-description')?.textContent?.trim() || 'Curated services and offers.';
+
+          // Optional: read custom data attributes if present
+          const deal = card.getAttribute('data-deal') || 'Exclusive offer available now.';
+          const logoImg = card.querySelector('.affiliate-logo img')?.getAttribute('src') || null;
+          const href = 'https://example.com'; // as requested
+
+          // Populate modal
+          nameEl.textContent = `About ${name}`;
+          subEl.textContent = desc;
+          titleEl.textContent = name;
+          dealEl.textContent = deal;
+          ctaEl.setAttribute('href', href);
+
+          // Logo box
+          if(logoImg){
+            logoEl.innerHTML = `<img src="${logoImg}" alt="${name} logo">`;
+          } else {
+            logoEl.textContent = 'Logo';
+          }
+
+          // (Optional) You can also populate richer HTML into bodyEl via data attributes later.
+          openModal();
+        });
+      });
+    })();
+
+</script>
+
+<script>
+/* === Utilities: equalize Quick Browse height to Top Picks; delayed focus flash when visible === */
+(function(){
+  function qs(sel, root){ return (root||document).querySelector(sel); }
+  function qsa(sel, root){ return Array.from((root||document).querySelectorAll(sel)); }
+
+  // Equalize Quick Browse height to match Top Picks (desktop only)
+  function equalizeQuickBrowse(){
+    var grid = qs('.home-intro-grid');
+    if(!grid) return;
+    var quick = qs('.quick-links', grid);
+    var topPicks = qs('.top-picks', grid);
+    if(!quick || !topPicks){ return; }
+
+    // Only equalize on wide screens
+    var wide = window.matchMedia('(min-width:1025px)').matches;
+    quick.style.maxHeight = '';
+    quick.style.height = '';
+
+    if(wide){
+      // Compute the total height of the left col container (Top Picks)
+      var h = topPicks.getBoundingClientRect().height;
+      // Apply exact height to quick links to avoid overhang or shortfall
+      quick.style.height = Math.round(h) + 'px';
+      quick.style.maxHeight = Math.round(h) + 'px';
+      quick.style.overflowY = 'auto';
+    }
+  }
+
+  // Smooth jump + only show blue outline when the target is actually visible
+  
+  // Affiliate card modal wiring (ensure left column scrolls)
+  function setupAffiliateModal(){
+    var modal = document.getElementById('affiliateModal');
+    if(!modal) return;
+    var dlg = modal.querySelector('.modal-dialog');
+    var closeBtn = document.getElementById('modalClose');
+
+    // Open on card click
+    qsa('.affiliate-card').forEach(function(card){
+      card.addEventListener('click', function(ev){
+        // Ignore clicks on inner CTA buttons so they still navigate
+        if(ev.target && ev.target.closest && ev.target.closest('.affiliate-get-deal')) return;
+        modal.classList.add('open');
+        modal.setAttribute('aria-hidden','false');
+        // Reset scroll positions
+        var left = modal.querySelector('.modal-left');
+        var right = modal.querySelector('.modal-right');
+        if(left) left.scrollTop = 0;
+        if(right) right.scrollTop = 0;
+        equalizeModalHeights();
+      });
+    });
+
+    function close(){
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden','true');
+    }
+    if(closeBtn) closeBtn.addEventListener('click', close);
+    modal.addEventListener('click', function(e){
+      if(e.target === modal) close();
+    });
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape' && modal.classList.contains('open')) close();
+    });
+
+    function equalizeModalHeights(){
+      if(!dlg) return;
+      // Let CSS handle max heights, we only ensure the columns can scroll
+      var left = modal.querySelector('.modal-left');
+      var right = modal.querySelector('.modal-right');
+      if(left){
+        left.style.maxHeight = 'calc(88vh - 40px)';
+        left.style.overflowY = 'auto';
+      }
+      if(right){
+        right.style.maxHeight = 'calc(88vh - 40px)';
+        right.style.overflowY = 'auto';
+      }
+    }
+    window.addEventListener('resize', equalizeModalHeights);
+  }
+
+  // Initialize
+  function onReady(fn){
+    if(document.readyState === 'loading'){ document.addEventListener('DOMContentLoaded', fn); }
+    else { fn(); }
+  }
+
+  onReady(function(){
+    equalizeQuickBrowse();
+        setupAffiliateModal();
+  });
+  window.addEventListener('resize', equalizeQuickBrowse);
+  window.addEventListener('load', equalizeQuickBrowse);
+})();
+</script>
+
+
+<script>
+(function(){
+  const PAGES = ['home','about','contact'];
+  const pageEls = Object.fromEntries(PAGES.map(id => [id, document.getElementById(id)]));
+  const navLinks = Array.from(document.querySelectorAll('.nav-link'));
+  const brand = document.querySelector('.brand');
+
+  function setActiveLink(page){
+    navLinks.forEach(a => {
+      a.classList.toggle('active', a.dataset.page === page);
+    });
+  }
+  function showPage(page){
+    PAGES.forEach(id => pageEls[id] && pageEls[id].classList.toggle('active', id === page));
+    setActiveLink(page);
+  }
+  function routeFromHash(){
+    const hash = (location.hash || '#home').replace('#','');
+    const page = PAGES.includes(hash) ? hash : 'home';
+    showPage(page);
+    // if hash also includes an anchor (e.g., #home:auto-1), handle it
+    if (hash.includes(':')) {
+      const [p, anchor] = hash.split(':');
+      if (PAGES.includes(p)) showPage(p);
+      requestAnimationFrame(()=>{
+        const target = document.getElementById(anchor);
+        if(target){ smoothScrollTo(target); }
+      });
+    }
+  }
+
+  // Smooth scroll with header offset
+  function smoothScrollTo(target){
+    const nav = document.querySelector('nav');
+    const offset = (nav?.offsetHeight || 0) + 8;
+    const rect = target.getBoundingClientRect();
+    const top = window.scrollY + rect.top - offset;
+    window.scrollTo({ top, behavior: 'smooth' });
+  }
+
+  // Nav clicks -> update hash
+  navLinks.forEach(a => {
+    a.addEventListener('click', (e)=>{
+      e.preventDefault();
+      const page = a.dataset.page;
+      location.hash = '#' + page;
+    });
+  });
+  if (brand){
+    brand.addEventListener('click', (e)=>{
+      e.preventDefault();
+      location.hash = '#home';
+    });
+  }
+
+  // In-page quick-browse / top-pick jumps (ensure on home page)
+  document.addEventListener('click', (e)=>{
+    const tp = e.target.closest('.top-pick-card');
+    if (tp && tp.dataset.jump){
+      e.preventDefault();
+      location.hash = '#home'; // ensure correct page
+      requestAnimationFrame(()=>{
+        const target = document.querySelector(tp.dataset.jump);
+        if(target){ singleFlashScroll(target); }
+      });
+    }
+    const ql = e.target.closest('.ql-item a');
+    if (ql && ql.getAttribute('href').startsWith('#')){
+      e.preventDefault();
+      const id = ql.getAttribute('href').slice(1);
+      location.hash = '#home:' + id;
+    }
+    // Affiliate cards open modal on card click (if not clicking the CTA)
+    const card = e.target.closest('.affiliate-card');
+    if (card && !e.target.closest('.affiliate-get-deal')){
+      e.preventDefault();
+      openAffiliateModal(card);
+    }
+  });
+
+  // Height equalization for quick-links vs top-picks on wide screens
+  function equalizeHeights(){
+    const grid = document.querySelector('.home-intro-grid');
+    const tp = document.querySelector('.top-picks');
+    const ql = document.querySelector('.quick-links');
+    if (!grid || !tp || !ql){ return; }
+    const wide = window.matchMedia('(min-width: 1025px)').matches;
+    if (wide){
+      // reset, measure, then set max
+      tp.style.height = 'auto'; ql.style.height = 'auto';
+      const h = Math.max(tp.offsetHeight, ql.offsetHeight);
+      tp.style.height = h + 'px';
+      ql.style.height = h + 'px';
+    } else {
+      tp.style.height = ''; ql.style.height = '';
+    }
+  }
+  window.addEventListener('load', equalizeHeights);
+  window.addEventListener('resize', equalizeHeights);
+
+  // Single blue flash exactly once per jump
+  function singleFlashScroll(target){
+    smoothScrollTo(target);
+    // Remove any previous class immediately
+    target.classList.remove('qb-once-flash');
+    // Force reflow to restart animation reliably
+    void target.offsetWidth;
+    target.classList.add('qb-once-flash');
+    // Clean up after animation ends
+    target.addEventListener('animationend', () => {
+      target.classList.remove('qb-once-flash');
+    }, { once: true });
+  }
+
+  // Modal logic (basic content population from card)
+  const overlay = document.getElementById('affiliateModal');
+  const closeBtn = document.getElementById('modalClose');
+  const modalName = document.getElementById('modalName');
+  const modalSub = document.getElementById('modalSub');
+  const modalBody = document.getElementById('modalBody');
+  const modalDeal = document.getElementById('modalDeal');
+  const modalLogo = document.getElementById('modalLogo');
+
+  function openAffiliateModal(card){
+    const name = card.querySelector('.affiliate-name')?.textContent?.trim() || 'Partner';
+    const desc = card.querySelector('.affiliate-description')?.textContent?.trim() || 'Details and benefits at a glance.';
+    const cta = card.querySelector('.affiliate-get-deal')?.getAttribute('href') || 'https://example.com';
+    modalName.textContent = name;
+    modalSub.textContent = desc;
+    if(modalDeal){ modalDeal.setAttribute('href', cta); }
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal(){
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+  if (closeBtn){ closeBtn.addEventListener('click', closeModal); }
+  overlay?.addEventListener('click', (e)=>{
+    if(e.target === overlay) closeModal();
+  });
+  document.addEventListener('keydown', (e)=>{
+    if(e.key === 'Escape' && overlay?.classList.contains('open')) closeModal();
+  });
+
+  // Initial route
+  window.addEventListener('hashchange', routeFromHash);
+  window.addEventListener('load', routeFromHash);
+})();
+</script>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  function flashElement(el){
+    if(!el) return;
+    el.classList.remove('qb-flash');
+    void el.offsetWidth; // reflow to restart animation
+    el.classList.add('qb-flash');
+    el.addEventListener('animationend', ()=>{
+      el.classList.remove('qb-flash');
+    }, {once:true});
+  }
+  // Attach behavior for quick-browse links
+  document.querySelectorAll('.quick-links a[href^="#"]').forEach(a=>{
+    a.addEventListener('click', function(e){
+      e.preventDefault();
+      const id = this.getAttribute('href').substring(1);
+      const target = document.getElementById(id);
+      if(target){
+        target.scrollIntoView({behavior:'smooth', block:'center'});
+        setTimeout(()=>flashElement(target), 400); // flash after scroll starts
+      }
+    });
+  });
+});
+</script>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  const brandEls = document.querySelectorAll('.brand, .site-logo, #logo');
+  brandEls.forEach(el=>{
+    el.addEventListener('click', function(e){
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+});
+</script>
+
+
+
+
+
+<!-- TSF TOP START -->
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  function flashOnce(el){
+    if(!el) return;
+    el.classList.remove('tsf-flash-once');
+    void el.offsetWidth;
+    el.classList.add('tsf-flash-once');
+    el.addEventListener('animationend', function handler(){
+      el.classList.remove('tsf-flash-once');
+    }, { once: true });
+  }
+  function smoothTo(el){
+    const nav = document.querySelector('nav');
+    const offset = (nav && nav.offsetHeight) ? nav.offsetHeight + 8 : 0;
+    const rect = el.getBoundingClientRect();
+    const top = window.scrollY + rect.top - offset;
+    window.scrollTo({ top, behavior: 'smooth' });
+  }
+
+  // Observe element visibility; trigger flash when sufficiently in view
+  function flashWhenVisible(target){
+    if(!target) return;
+    // If already mostly visible, flash immediately
+    const r = target.getBoundingClientRect();
+    const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+    const alreadyVisible = r.top >= 0 && r.bottom <= vh && (r.height > 0);
+    if (alreadyVisible){ flashOnce(target); return; }
+
+    const io = new IntersectionObserver((entries, obs) => {
+      for (const entry of entries){
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.6){
+          flashOnce(target);
+          obs.unobserve(target);
+        }
+      }
+    }, { threshold: [0.0, 0.25, 0.5, 0.6, 0.75, 1.0] });
+    io.observe(target);
+  }
+
+  // Quick Browse links (#id): scroll, then rely on IO to flash on actual arrival
+  document.querySelectorAll('.quick-links a[href^="#"]').forEach(a => {
+    a.addEventListener('click', function(e){
+      e.preventDefault();
+      const id = this.getAttribute('href').slice(1);
+      const target = document.getElementById(id);
+      if(target){
+        flashWhenVisible(target);
+        smoothTo(target);
+      }
+    });
+  });
+
+  // Top Pick cards with data-jump="#id"
+  document.querySelectorAll('.top-pick-card[data-jump]').forEach(card => {
+    card.addEventListener('click', function(e){
+      if (e.target.closest('.affiliate-cta')) return;
+      const sel = this.getAttribute('data-jump');
+      const target = sel ? document.querySelector(sel) : null;
+      if(target){
+        flashWhenVisible(target);
+        smoothTo(target);
+      }
+    });
+  });
+
+  // Scroll to top on brand/logo click
+  const brand = document.querySelector('.brand');
+  if (brand){
+    brand.addEventListener('click', function(e){
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+});
+</script>
+<!-- TSF TOP END -->
+
+  <script src="assets/js/content.js"></script>
+</body>
+</html>
